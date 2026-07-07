@@ -1,0 +1,399 @@
+<style>
+  :root{
+    --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f3f6; --ink:#1a1d21; --ink-soft:#59626d;
+    --line:#e3e7ec; --accent:#0f5aa8; --accent-soft:#e7f0fb; --good:#147a52; --good-soft:#e4f4ec;
+    --warn:#b7791f; --warn-soft:#fbf1dd; --danger:#b3402f; --shadow:0 1px 3px rgba(20,30,45,.06),0 6px 20px rgba(20,30,45,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#14171a; --surface:#1c2126; --surface-2:#232a30; --ink:#e9edf1; --ink-soft:#9aa4af;
+      --line:#2d353c; --accent:#4aa3ff; --accent-soft:#16324e; --good:#4cc38a; --good-soft:#123528;
+      --warn:#e0b25a; --warn-soft:#3a2f16; --danger:#f08c7a; --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f3f6; --ink:#1a1d21; --ink-soft:#59626d;
+    --line:#e3e7ec; --accent:#0f5aa8; --accent-soft:#e7f0fb; --good:#147a52; --good-soft:#e4f4ec;
+    --warn:#b7791f; --warn-soft:#fbf1dd; --danger:#b3402f; --shadow:0 1px 3px rgba(20,30,45,.06),0 6px 20px rgba(20,30,45,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#14171a; --surface:#1c2126; --surface-2:#232a30; --ink:#e9edf1; --ink-soft:#9aa4af;
+    --line:#2d353c; --accent:#4aa3ff; --accent-soft:#16324e; --good:#4cc38a; --good-soft:#123528;
+    --warn:#e0b25a; --warn-soft:#3a2f16; --danger:#f08c7a; --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 20px 72px;}
+  header.masthead{border-bottom:3px solid var(--accent);padding-bottom:20px;margin-bottom:8px;}
+  .eyebrow{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;text-transform:uppercase;}
+  h1{font-size:27px;line-height:1.3;margin:.35em 0 .15em;font-weight:800;letter-spacing:-.01em;}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:13px;color:var(--ink-soft);}
+  .meta b{color:var(--ink);font-weight:600;}
+  h2{font-size:20px;margin:38px 0 14px;padding-top:6px;font-weight:800;letter-spacing:-.01em;
+    display:flex;align-items:center;gap:10px;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:27px;padding:0 7px;
+    background:var(--accent);color:#fff;border-radius:8px;font-size:15px;font-weight:800;}
+  h3{font-size:16px;margin:22px 0 8px;font-weight:700;}
+  p{margin:.5em 0;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;
+    box-shadow:var(--shadow);margin:14px 0;}
+  .verdict{background:linear-gradient(180deg,var(--good-soft),var(--surface));border:1px solid var(--good);
+    border-left:6px solid var(--good);}
+  .verdict .lead{font-size:15px;color:var(--good);font-weight:800;letter-spacing:.02em;margin-bottom:2px;}
+  .verdict h3{font-size:19px;margin:.1em 0 .4em;}
+  .big{font-size:15px;}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12.5px;font-weight:700;
+    background:var(--accent-soft);color:var(--accent);border:1px solid transparent;white-space:nowrap;}
+  .pill.good{background:var(--good-soft);color:var(--good);}
+  .pill.warn{background:var(--warn-soft);color:var(--warn);}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:14px 0;
+    box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px;background:var(--surface);}
+  th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-weight:700;font-size:13px;color:var(--ink);position:sticky;top:0;
+    border-bottom:2px solid var(--line);}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  tr.rec td{background:var(--good-soft);}
+  .rowhead{font-weight:700;}
+  .src{color:var(--accent);text-decoration:none;font-size:12px;border-bottom:1px dotted var(--accent);}
+  .src:hover{opacity:.75;}
+  sup.ref{font-size:11px;color:var(--accent);font-weight:700;margin-left:1px;}
+  ul,ol{margin:.5em 0;padding-left:1.35em;}
+  li{margin:.32em 0;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:680px){.grid2{grid-template-columns:1fr;}}
+  .note{font-size:13px;color:var(--ink-soft);}
+  .callout{border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;margin:12px 0;}
+  .callout.info{border-color:var(--accent);background:var(--accent-soft);}
+  .steps{counter-reset:s;list-style:none;padding-left:0;}
+  .steps li{position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed var(--line);}
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;width:29px;height:29px;
+    background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;}
+  .steps b{color:var(--ink);}
+  .steps .wk{color:var(--accent);font-weight:700;font-size:13px;}
+  .refs{font-size:12.5px;color:var(--ink-soft);}
+  .refs li{margin:.3em 0;word-break:break-all;}
+  .refs a{color:var(--accent);text-decoration:none;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);}
+  .themebtn{position:fixed;right:14px;top:14px;z-index:9;background:var(--surface);border:1px solid var(--line);
+    color:var(--ink);border-radius:9px;padding:7px 11px;font-size:13px;cursor:pointer;box-shadow:var(--shadow);}
+  @media print{
+    :root{--bg:#fff;--surface:#fff;--surface-2:#f3f5f7;--shadow:none;}
+    body{font-size:11.5pt;}
+    .wrap{max-width:none;padding:0 6mm;}
+    .themebtn{display:none;}
+    .card,.tablewrap{box-shadow:none;break-inside:avoid;}
+    table{min-width:0;font-size:9.6pt;}
+    thead th{position:static;}
+    h2{break-after:avoid;}
+    tr,li{break-inside:avoid;}
+    a.src,sup.ref{color:#0f5aa8 !important;}
+  }
+</style>
+
+<button class="themebtn" onclick="var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');">切換主題</button>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">電商建置評估報告 · 賈維斯（如菓）製</div>
+  <h1>VETO PRO PAC（維托職人包）台灣代理商<br>官網＋線上購物＋進銷存／ERP 建置評估</h1>
+  <p class="sub">四路線方案比較 · 費用估算 · 導入建議 —— 所有價格均查證 2026 年官方現行來源，無來源者標「需索取報價」，絕不臆測。</p>
+  <div class="meta">
+    <span><b>版本</b> v1.0</span>
+    <span><b>查證日</b> 2026-07-07</span>
+    <span><b>幣別</b> 新台幣 NT$</span>
+    <span><b>營收假設</b> 月營收 30 萬（年 360 萬）</span>
+    <span><b>官方查證來源</b> 約 20 個價格頁</span>
+  </div>
+</header>
+
+<!-- 結論先行 -->
+<div class="card verdict">
+  <div class="lead">★ 結論先行 · 主推方案</div>
+  <h3>路線 B：開店平台 SaaS ＋ 雲端進銷存串接</h3>
+  <p class="big">具體組合 <span class="pill good">EasyStore 成長版</span> ＋ <span class="pill good">CMT 雲端進銷存</span>：
+  上線快、無平台交易抽成、進貨／成本／多倉／對帳一次到位，且不必養工程師。</p>
+  <p class="big"><b>首年約 NT$22.7 萬</b>（建置＋12 個月平台與進銷存月費＋金流手續費）、
+  <b>次年起約 NT$19.7 萬／年</b>。若要「先輕量起步、日後再接進銷存」，可先用路線 A（EasyStore 商務版）首年約 15 萬。</p>
+  <p class="note">理由：代理單一品牌、SKU 中小量（估上百個）、既有線下庫存需要成本對帳——開店平台四家皆<b>只有前台基本庫存、沒有進貨成本與對帳</b>，故需外接雲端進銷存；全客製（含 ERP）動輒 80 萬起，此規模不符效益。詳見 §4、§5。</p>
+</div>
+
+<!-- 1 品牌現況 -->
+<h2><span class="n">1</span>品牌現況（判斷規模）</h2>
+<div class="card">
+  <p><b>品牌</b>：VETO PRO PAC 為美國專業工具袋品牌（創辦人 Roger Brouard，1998 年以專利中央面板工具袋起家），主力為技師工具袋／背包／腰包／收納系統，主打 5 年保固。<sup class="ref">B1</sup></p>
+  <p><b>台灣售價帶</b>：依比價網實際上架，約 <b>NT$1,980 ～ 23,000</b>（小型收納袋至 TECH-XL 輪式工具箱）；我方原假設 1,500–15,000 涵蓋中低階，高階輪式系列會超出至 2 萬以上。<sup class="ref">B2</sup></p>
+  <p><b>台灣代理／通路</b>：VETO 官網國際經銷商頁列台灣代理為 <b>Olifor Enterprise Co., Ltd</b>（台中市太平區益昌東路 107 號，0979-120-333，olifor@me.com）。<sup class="ref">B1</sup> 目前線上通路以<b>蝦皮專屬賣場</b>（shopee.tw/vetopropac_tw）<sup class="ref">B3</sup>與工具零售商<b>Light Way 工具袋工房</b>（lightway.tw，台中后里）<sup class="ref">B4</sup>為主；momo／PChome 站內搜尋未直接命中。<span class="note">（是否真未上架未能完全查證。）</span></p>
+  <p><b>臉書粉專</b>：「VETO PRO PAC 維托職人包」（facebook.com/VETO.PRO.PAC.TAIWAN）<sup class="ref">B5</sup>——搜尋摘要顯示約 683 讚（FB 擋爬蟲，未能直接開頁核實）；全球官方粉專 76 萬讚（美國總部，規模不可套用於台灣代理）。</p>
+  <p><b>SKU 量級</b>：官網 Tool Bags 大類即 14 個子分類，另有 Tool Storage／EVO／VETO GO 等平行大類，全品牌 SKU 推估<b>上百個（約 150–300+）</b>。<span class="note">依官網目錄結構推算，非官方公布數字。</span><sup class="ref">B6</sup></p>
+  <p><b>客群</b>：專業工班／技師——水電、空調 HVAC、電工、木工、鐵工、汽修、弱電通訊等。</p>
+  <div class="callout info"><b>規模研判</b>：單一進口品牌代理、SKU 中小量、客群明確（B2B 工班＋一般技師）、已有蝦皮與經銷 DM 基礎。屬「需要正規庫存與對帳、但營運複雜度不高」的中小型電商——這是決定下方推薦的關鍵前提。</div>
+</div>
+
+<!-- 2 四路線比較 -->
+<h2><span class="n">2</span>四路線總覽比較</h2>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>路線</th><th>建置難度／工期</th><th>進銷存・對帳能力</th><th>技術養護</th><th class="num">首年概算</th><th class="num">次年起／年</th><th>適配度</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="rowhead">A · 開店平台 SaaS<br><span class="note">SHOPLINE／Cyberbiz／EasyStore／WACA</span></td>
+      <td>低／1–3 週</td>
+      <td>僅前台基本庫存<br><span class="note">無進貨成本／對帳</span></td>
+      <td>免（平台代管）</td>
+      <td class="num">~15 萬</td>
+      <td class="num">~13 萬</td>
+      <td>起步可，<b>對帳不足</b></td>
+    </tr>
+    <tr class="rec">
+      <td class="rowhead">B · 開店平台＋雲端進銷存 <span class="pill good">★ 主推</span></td>
+      <td>低–中／4–8 週</td>
+      <td><b>完整</b><br>進貨／成本／多倉／對帳</td>
+      <td>免（皆 SaaS）</td>
+      <td class="num"><b>~22.7 萬</b></td>
+      <td class="num"><b>~19.7 萬</b></td>
+      <td><b>最適</b>此規模</td>
+    </tr>
+    <tr>
+      <td class="rowhead">C · WordPress／WooCommerce 自架</td>
+      <td>中–高／4–8 週＋</td>
+      <td>內建庫存；進階需外掛／外接</td>
+      <td><b>需自負</b><br>更新／備份／防駭</td>
+      <td class="num">~21 萬</td>
+      <td class="num">~12.6 萬</td>
+      <td>有技術資源才划算</td>
+    </tr>
+    <tr>
+      <td class="rowhead">D · 全客製（含 ERP）</td>
+      <td>高／2–8 個月＋</td>
+      <td>可完全客製</td>
+      <td>需長期綁開發商／自聘</td>
+      <td class="num">≥ 80 萬</td>
+      <td class="num">數十萬</td>
+      <td><b>規模不符，不建議</b></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p class="note">首／次年概算採下方 §4 代表配置；金流手續費以年營收 360 萬 × 2.75% 估。路線 C 次年較低但需自行承擔技術養護與資安風險，且開箱即用的成本對帳較弱。</p>
+
+<h3>路線 A 內含：四大開店平台 SaaS 明細（2026 官方現行）</h3>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>平台</th><th>代表方案（每月，年繳計）</th><th>平台交易抽成</th><th>信用卡金流費率</th><th>內建進銷存</th><th>API</th><th>試用</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="rowhead">SHOPLINE<sup class="ref">A1</sup></td>
+      <td>探索者 NT$40,000/年<br>戰略家 55,000／OMO大師 68,000／領航員 88,000<br><span class="note">＋一次性開通 5,000</span></td>
+      <td>GMV 2%（前三）<br>／1.5%（領航員）</td>
+      <td>約 2.2%<span class="note">（二手來源，需向平台確認）</span></td>
+      <td>基本；OMO大師以上加多倉</td>
+      <td>僅最高方案</td>
+      <td>14 天</td>
+    </tr>
+    <tr>
+      <td class="rowhead">Cyberbiz<sup class="ref">A2</sup></td>
+      <td>專業版+ NT$2,363／進階版+ 4,113／高手版+ 5,670</td>
+      <td>進階/高手 GMV 1%<br>企業版 5%<span class="note">（頁面數字有落差，需核）</span></td>
+      <td>官網未公開<br><span class="note">（綁第三方金流）</span></td>
+      <td>基本（安全庫存提醒）</td>
+      <td>有</td>
+      <td>未標示</td>
+    </tr>
+    <tr>
+      <td class="rowhead">EasyStore<sup class="ref">A3</sup></td>
+      <td>標準 NT$1,399／商務 2,799／<b>成長 5,399</b>／全能 6,999</td>
+      <td><b>不收</b>交易手續費</td>
+      <td>官網稱「1.8% 起」<span class="note">（費率表未能完整查證）</span></td>
+      <td>基本＋多庫存點（成長 5／全能 10）</td>
+      <td>有（開放）</td>
+      <td>14 天</td>
+    </tr>
+    <tr>
+      <td class="rowhead">WACA<sup class="ref">A4</sup></td>
+      <td>入門 NT$0／商務成長 3,099／高階 5,399／旗艦 8,099</td>
+      <td><b>不抽成</b></td>
+      <td>3.5%／2.1%／2%／2%<span class="note">（隨方案內含）</span></td>
+      <td>基本；多倉需外接 ERP App</td>
+      <td>需第三方協助</td>
+      <td>說法不一</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="callout"><b>關鍵發現</b>：四家皆<b>只做到前台庫存數量管理，沒有一家內建完整進銷存（進貨單／成本／多倉對帳）</b>。中小量 SKU 若要成本管控與對帳，四家都需靠 API 外接專業進銷存——這正是路線 B 存在的理由。</div>
+
+<!-- 3 進銷存 -->
+<h2><span class="n">3</span>雲端進銷存串接選項（路線 B 核心，2026 官方現行）</h2>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>進銷存方案</th><th class="num">月費</th><th>可直連的開店平台</th><th>特點</th><th>來源</th></tr>
+  </thead>
+  <tbody>
+    <tr class="rec">
+      <td class="rowhead">CMT 雲端進銷存<br>（Cloudmaker）</td>
+      <td class="num">基礎款 NT$2,800 起<br>智能款 6,000 起</td>
+      <td><b>官方 API 串接 9 平台</b>：SHOPLINE、EasyStore、Cyberbiz、蝦皮、WooCommerce、91APP、QDM、1Shop、meepshop<span class="note">（另 Excel 匯入 momo/PChome 等 20+ 通路）</span></td>
+      <td>本次唯一同時串接三大開店平台＋蝦皮；換／加前台不用換後台</td>
+      <td><a class="src" href="https://www.cloudmaker.com.tw/erpforretail/">C1</a></td>
+    </tr>
+    <tr>
+      <td class="rowhead">鼎新 A1 商務應用雲</td>
+      <td class="num">進銷存 NT$800 起<br>＋電商訂單 700 起<br>＋電子發票 600 起</td>
+      <td>官方直連蝦皮、SHOPLINE、91APP、Cyberbiz（<b>無 EasyStore</b>）</td>
+      <td>老牌、會計級 ERP；SHOPLINE 官方合作夥伴（Smart ERP，價格未公開）</td>
+      <td><a class="src" href="https://a1.digiwin.com/product/price.php">C2</a></td>
+    </tr>
+    <tr>
+      <td class="rowhead">SBM 雲端進銷存（5 人版）</td>
+      <td class="num">NT$16,000／年<br>（約 1,333/月）</td>
+      <td>雲市集上架（政府補助可申請）</td>
+      <td>價格透明、入門便宜；串接開店平台資訊未載明</td>
+      <td><a class="src" href="https://www.tcloud.gov.tw/solution/02A368781CB9540CE0631512620A561D">C3</a></td>
+    </tr>
+    <tr>
+      <td class="rowhead">EZ ERP／錢老闆／WeP</td>
+      <td class="num">需索取報價</td>
+      <td>各家不一（錢老闆列 SHOPLINE；WeP 走 SHOPLINE 市集）</td>
+      <td>官網未公開明確月費／計費週期矛盾</td>
+      <td><a class="src" href="https://www.ezerp.com.tw/">C4</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p class="note"><b>老闆指名的藍格軟體、振昇資訊</b>：以多組關鍵字查無對應官網／產品頁（僅命中不相關的「藍新科技」金流），<b>需老闆確認正確公司全名</b>再補查。Vital（叡揚）經查為 CRM／表單／財務產品線，<b>無獨立進銷存模組</b>，不適用本案。</p>
+
+<!-- 4 費用明細 -->
+<h2><span class="n">4</span>費用明細表（代表配置 · 含來源）</h2>
+<div class="callout info"><b>共通假設</b>：月營收 NT$300,000（年 360 萬）。<b>金流手續費</b>以綠界一般賣家 <b>2.75%</b>（稅前，官方公告<sup class="ref">C5</sup>）為基準 ≈ <b>NT$99,000／年</b>；<b>含 5% 營業稅實質約 2.89%</b>（每筆另加 NT$1 訂單處理費），含稅約 NT$10.4 萬／年，本表以 2.75% 保守列示。實際依綁定金流商與議價浮動——WACA 高階內含 2%（≈72,000）、SHOPLINE 約 2.2%（≈79,200）、特約／大量可低至 1.85%（另有設定費）。此為變動成本，隨營收增減。</div>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>費用項目</th><th class="num">A 開店 SaaS<br><span class="note">EasyStore 商務版</span></th><th class="num">B ★ 開店＋進銷存<br><span class="note">EasyStore 成長＋CMT</span></th><th class="num">C WooCommerce 自架</th><th class="num">D 全客製＋ERP</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="rowhead">建置（一次性）</td><td class="num">20,000<span class="note"><br>簡易委外美編</span></td><td class="num">30,000<span class="note"><br>美編＋串接設定</span></td><td class="num">80,000<span class="note"><br>行情 5–15 萬取中位</span></td><td class="num">800,000 起<span class="note"><br>電商 50 萬＋ERP 30 萬起</span></td></tr>
+    <tr><td class="rowhead">版型（一次性）</td><td class="num">—</td><td class="num">—</td><td class="num">1,888<span class="note"><br>WoodMart $59</span></td><td class="num">含建置</td></tr>
+    <tr><td class="rowhead">平台／主機年費</td><td class="num">33,588</td><td class="num">64,788</td><td class="num">8,400<span class="note"><br>Cloudways 中階</span></td><td class="num">自有主機</td></tr>
+    <tr><td class="rowhead">進銷存年費</td><td class="num">0<span class="note"><br>用平台內建</span></td><td class="num">33,600<span class="note"><br>CMT 2,800/月</span></td><td class="num">0<span class="note"><br>內建/ATUM 免費</span></td><td class="num">含 ERP</td></tr>
+    <tr><td class="rowhead">網域年費</td><td class="num">含平台</td><td class="num">含平台</td><td class="num">600</td><td class="num">600</td></tr>
+    <tr><td class="rowhead">平台 GMV 抽成</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td class="rowhead">維護年費</td><td class="num">平台代管</td><td class="num">平台代管</td><td class="num">18,000<span class="note"><br>委外約 1,500/月</span></td><td class="num">數十萬<span class="note"><br>建置費 15–20%</span></td></tr>
+    <tr><td class="rowhead">金流手續費（@360 萬 × 2.75%）</td><td class="num">99,000</td><td class="num">99,000</td><td class="num">99,000</td><td class="num">99,000</td></tr>
+    <tr style="border-top:2px solid var(--accent)"><td class="rowhead">首年總成本</td><td class="num"><b>~152,600</b></td><td class="num"><b>~227,400</b></td><td class="num"><b>~207,900</b></td><td class="num"><b>≥ 800,000</b></td></tr>
+    <tr><td class="rowhead">次年起／年</td><td class="num"><b>~132,600</b></td><td class="num"><b>~197,400</b></td><td class="num"><b>~126,000</b></td><td class="num"><b>數十萬</b></td></tr>
+  </tbody>
+</table>
+</div>
+<p class="note">數字為代表配置估算，非報價單；平台方案常改版與促銷，實際下單以官網當下頁面／業務報價為準。金流手續費四路線相同（隨營收而非平台），比較時可先看「建置＋平台＋進銷存」的差異。</p>
+
+<div class="grid2">
+  <div class="card">
+    <h3>路線 B 替代組合</h3>
+    <p class="note">若偏好 SHOPLINE 行銷生態或要會計級 ERP：</p>
+    <p><b>SHOPLINE 電商戰略家 ＋ 鼎新 A1</b><br>年費 55,000＋開通 5,000＋GMV 2%（≈72,000）＋鼎新 A1（進銷存＋電商訂單≈18,000/年）＋金流。<br><b>首年約 25.9 萬、次年約 22.4 萬</b>（含 GMV 抽成，故較貴）。</p>
+    <p class="note">取捨：SHOPLINE 行銷／OMO 功能強、鼎新為老牌會計級；代價是多一筆 GMV 抽成，且 EasyStore 不在鼎新直連清單。</p>
+  </div>
+  <div class="card">
+    <h3>為何不選路線 D（全客製）</h3>
+    <ul style="margin:0">
+      <li><b>成本失衡</b>：電商＋ERP 全客製 80 萬–數百萬，中小量 SKU 的 ROI 偏低。</li>
+      <li><b>工期過長</b>：2–8 個月起；SaaS 4–8 週即可上線。</li>
+      <li><b>維護綁死</b>：長期倚賴原開發商或自聘工程師（月薪 8–12 萬）。</li>
+      <li><b>規模不對稱</b>：單品牌業務流程單純，用高成本解決套件即可滿足的需求。</li>
+    </ul>
+    <p class="note" style="margin-bottom:0">來源：接案／軟體開發行情多來源歸納<sup class="ref">D1</sup>，非官方定價。</p>
+  </div>
+</div>
+
+<!-- 5 推薦與導入 -->
+<h2><span class="n">5</span>推薦與導入時程</h2>
+<div class="card verdict" style="margin-top:0">
+  <div class="lead">主推</div>
+  <p class="big"><b>EasyStore 成長版 ＋ CMT 雲端進銷存</b>（路線 B）。<b>首年約 NT$22.7 萬、次年約 NT$19.7 萬。</b></p>
+  <p style="margin-bottom:0">三個決定性理由：① EasyStore <b>不收交易抽成</b>、開放 API，長期成本低於 SHOPLINE／Cyberbiz（免 GMV 抽成）；② CMT 是本次唯一<b>官方同時 API 串接 SHOPLINE／EasyStore／Cyberbiz＋蝦皮</b>的進銷存，未來換前台或多通路並行都不用換後台；③ 一次補上四家開店平台都缺的<b>進貨成本與對帳</b>，且全程 SaaS、<b>不必養工程師</b>。</p>
+</div>
+
+<h3>導入時程（估 5–8 週，約 1.5–2 個月）</h3>
+<div class="card">
+<ol class="steps">
+  <li><span class="wk">第 1 週</span> <b>申請與開店</b>：註冊 EasyStore、選成長版、開 14 天試用；同步向<b>綠界／藍新申請金流</b>（送公司登記與負責人證件）。</li>
+  <li><span class="wk">第 1–2 週</span> <b>金流審核＋品牌視覺</b>：金流開通審核約 3–7 個工作天（需預留）；期間完成 LOGO／版型／分類與運費設定。</li>
+  <li><span class="wk">第 2–4 週（關鍵路徑）</span> <b>商品上架</b>：上百個 SKU 的拍照、規格、文案、定價——這是最耗時的一段，視人力 2–4 週。</li>
+  <li><span class="wk">第 3–4 週</span> <b>串接 CMT 進銷存</b>：匯入既有庫存／成本／供應商，設定進貨與對帳流程、與 EasyStore 訂單自動拋轉。</li>
+  <li><span class="wk">第 4–5 週</span> <b>試營運</b>：金流／物流實測下單、庫存扣帳與對帳驗證、少量真實訂單試跑。</li>
+  <li><span class="wk">第 5–6 週</span> <b>正式上線</b>：搭配蝦皮既有客群導流、經銷 DM 放官網 QR。</li>
+</ol>
+<p class="note" style="margin-bottom:0"><b>關鍵路徑＝商品上架人力</b>。若能先備妥商品照與規格表，整體可壓到 5 週內。</p>
+</div>
+
+<!-- 6 風險 -->
+<h2><span class="n">6</span>風險與注意事項</h2>
+<div class="card">
+<ul>
+  <li><b>平台綁定（vendor lock-in）</b>：SaaS 的商品／會員資料匯出格式受限，日後換平台需搬資料。因應：選有<b>開放 API 與匯出</b>的平台（EasyStore 具備），且把進銷存（CMT）獨立於前台，換前台不動後台。</li>
+  <li><b>資料轉移</b>：既有 Excel 庫存／客戶／成本資料匯入需先清洗欄位，對齊 CMT 匯入格式；建議上線前做一次完整對帳校驗。</li>
+  <li><b>金流審核時間</b>：綠界／藍新開通需送件審核，約 3–7 個工作天甚至更久，<b>務必提前於專案第 1 週申請</b>，避免卡上線。</li>
+  <li><b>GMV 抽成陷阱</b>：SHOPLINE、Cyberbiz 除年費外<b>另抽 GMV</b>（1%–5%），營收越高抽越多；試算總成本務必含這塊（本報告主推的 EasyStore／WACA 不抽成）。</li>
+  <li><b>海外主機續約跳價（路線 C）</b>：SiteGround 等首年促銷價與續約價可差 5 倍，若走自架須以續約價估長期成本。</li>
+  <li><b>價格時效</b>：平台方案頻繁改版與促銷，本報告數字為 2026-07-07 查證之官方現行價；<b>正式決策前請以官網當下頁面或業務書面報價為準</b>。</li>
+</ul>
+</div>
+
+<!-- 來源 -->
+<h2><span class="n">7</span>來源與查證註記</h2>
+<div class="card">
+<p class="note">下列為本報告價格與事實之查證來源（查證日 2026-07-07）。標「需索取報價」者為官網未公開，未臆測。</p>
+<ol class="refs">
+  <li><b>B1</b> VETO 官方國際經銷商（台灣代理 Olifor）／品牌保固：<a href="https://vetopropac.com/international-distributors/">vetopropac.com/international-distributors/</a></li>
+  <li><b>B2</b> 台灣售價帶（比價網）：<a href="https://biggo.com.tw/s/veto+pro+pac/">biggo.com.tw/s/veto+pro+pac/</a></li>
+  <li><b>B3</b> 蝦皮專屬賣場：<a href="https://shopee.tw/vetopropac_tw">shopee.tw/vetopropac_tw</a> ｜ <b>B4</b> Light Way：<a href="https://lightway.tw/products/vpp10258">lightway.tw</a></li>
+  <li><b>B5</b> 台灣粉專：<a href="https://facebook.com/VETO.PRO.PAC.TAIWAN/">facebook.com/VETO.PRO.PAC.TAIWAN</a>（讚數未能直接核實）｜ <b>B6</b> 官網目錄：<a href="https://vetopropac.com/catalog/tool-bags-cat/">vetopropac.com/catalog/tool-bags-cat</a></li>
+  <li><b>A1</b> SHOPLINE 方案：<a href="https://shopline.tw/about/pricing/basic">shopline.tw/about/pricing/basic</a></li>
+  <li><b>A2</b> Cyberbiz 方案：<a href="https://www.cyberbiz.io/pricing/">cyberbiz.io/pricing</a>（pricing 頁與 compare 頁年費／抽成有落差，下單前核實）</li>
+  <li><b>A3</b> EasyStore 方案／金流：<a href="https://www.easystore.co/zh-tw/pricing">easystore.co/zh-tw/pricing</a> · <a href="https://www.easystore.co/zh-tw/payments">/payments</a></li>
+  <li><b>A4</b> WACA 方案：<a href="https://www.waca.net/pricing/online-store">waca.net/pricing/online-store</a></li>
+  <li><b>C1</b> CMT 雲端進銷存（價格＋9 平台 API 串接清單）：<a href="https://www.cloudmaker.com.tw/erpforretail/">cloudmaker.com.tw/erpforretail</a> · <a href="https://www.cloudmaker.com.tw/plans-pricing-cmt/">/plans-pricing-cmt</a> · <a href="https://www.easystore.co/en-us/apps/cmt-erp-order-synchronisation">EasyStore App</a></li>
+  <li><b>C2</b> 鼎新 A1 商務雲：<a href="https://a1.digiwin.com/product/price.php">a1.digiwin.com/product/price.php</a> · <a href="https://apps.shopline.tw/zh-hant/apps/a1erp">SHOPLINE×鼎新</a></li>
+  <li><b>C3</b> SBM 雲端進銷存：<a href="https://www.tcloud.gov.tw/solution/02A368781CB9540CE0631512620A561D">tcloud.gov.tw</a> ｜ <b>C4</b> EZ ERP：<a href="https://www.ezerp.com.tw/">ezerp.com.tw</a></li>
+  <li><b>C5</b> 綠界金流費率：<a href="https://www.ecpay.com.tw/Business/payment_fees">ecpay.com.tw/Business/payment_fees</a> · 藍新：<a href="https://www.newebpay.com/website/Page/content/service_fare">newebpay.com/…/service_fare</a></li>
+  <li><b>C6</b> 主機／版型／外掛：<a href="https://www.cloudways.com/en/pricing.php">Cloudways</a> · <a href="https://themeforest.net/item/woodmart-woocommerce-wordpress-theme/20264492">WoodMart</a> · <a href="https://woocommerce.com/document/stock-manager/">WooCommerce 庫存</a> · <a href="https://wordpress.org/plugins/atum-stock-manager-for-woocommerce/">ATUM</a></li>
+  <li><b>D1</b> 客製電商／ERP 行情（市場區間，非官方定價）：<a href="https://www.tasker.com.tw/price/erp-system">tasker.com.tw/price/erp-system</a> · <a href="https://ai.com.tw/app-development-cost/">ai.com.tw</a></li>
+</ol>
+</div>
+
+<h3>未能查證項（明列，不臆測）</h3>
+<div class="card">
+<ul class="note" style="margin:0">
+  <li>VETO 台灣粉專精確讚數（FB 擋爬，~683 僅搜尋摘要）、代理商營業額／實體據點、官方 SKU 精確總數、momo 是否上架。</li>
+  <li>SHOPLINE 信用卡金流費率 2.2%／3.5%（官方 support 頁 403，僅二手來源）。</li>
+  <li>Cyberbiz：pricing 頁與 compare 頁年費／GMV 抽成不一致、免費試用天數、官方金流費率。</li>
+  <li>EasyStore 信用卡實際費率（頁面稱「1.8% 起」，費率表內文未能完整查證）。</li>
+  <li>WACA 免費試用天數（官網多處說法不一）。</li>
+  <li>鼎新 SHOPLINE×Smart ERP 價格未公開；SHOPLINE POS／模組加購牌價。</li>
+  <li><b>藍格軟體、振昇資訊</b>：查無官方網站，需老闆確認正確公司全名再補查。</li>
+  <li>CMT 資訊整合／私有雲、EZ ERP／錢老闆／WeP 具體月費：官網未公開，需索取報價。</li>
+  <li>ATUM 進階付費模組金額（官網定價頁擋爬蟲）。</li>
+  <li>客製電商／ERP 建置與客製串接費用為<b>市場行情區間（多來源歸納），非官方定價</b>。</li>
+</ul>
+</div>
+
+<footer>
+  <p>本報告由賈維斯（如菓室內設計工程統籌 AI）彙整，供 VETO PRO PAC 台灣代理商評估電商建置決策參考。價格為 2026-07-07 查證之官方現行資料，具時效性；正式決策前請向各平台索取書面報價。全客製與接案「行情區間」為多來源歸納，非任何官方公告。</p>
+  <p>查證來源：VETO 官方 · SHOPLINE · Cyberbiz · EasyStore · WACA · 鼎新 A1 · Cloudmaker CMT · 綠界 · 藍新 · Cloudways · ThemeForest · WooCommerce · 政府雲市集 等約 20 個官方價格頁。</p>
+</footer>
+
+</div>
